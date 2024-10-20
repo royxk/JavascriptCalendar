@@ -1,0 +1,66 @@
+const monthNames = [
+  "January",
+  "February",
+  "March",
+  "April",
+  "May",
+  "June",
+  "July",
+  "August",
+  "September",
+  "October",
+  "November",
+  "December",
+];
+
+const daysContainer = document.getElementById("days");
+const monthName = document.getElementById("month-name");
+const prevBtn = document.getElementById("prev");
+const nextBtn = document.getElementById("next");
+
+let currentMonth = new Date().getMonth();
+let currentYear = new Date().getFullYear();
+
+function renderCalendar(month, year) {
+  daysContainer.innerHTML = "";
+  const firstDay = new Date(year, month).getDay();
+  const daysInMonth = new Date(year, month + 1, 0).getDate();
+
+  monthName.innerText = `${monthNames[month]} ${year}`;
+
+  // 빈 칸 추가 (월의 첫날 요일에 따라)
+  for (let i = 0; i < firstDay; i++) {
+    const emptyCell = document.createElement("div");
+    emptyCell.classList.add("day");
+    daysContainer.appendChild(emptyCell);
+  }
+
+  // 일자 채우기
+  for (let i = 1; i <= daysInMonth; i++) {
+    const dayCell = document.createElement("div");
+    dayCell.classList.add("day");
+    dayCell.innerText = i;
+    daysContainer.appendChild(dayCell);
+  }
+}
+
+prevBtn.addEventListener("click", () => {
+  currentMonth--;
+  if (currentMonth < 0) {
+    currentMonth = 11;
+    currentYear--;
+  }
+  renderCalendar(currentMonth, currentYear);
+});
+
+nextBtn.addEventListener("click", () => {
+  currentMonth++;
+  if (currentMonth > 11) {
+    currentMonth = 0;
+    currentYear++;
+  }
+  renderCalendar(currentMonth, currentYear);
+});
+
+// 현재 월 달력 렌더링
+renderCalendar(currentMonth, currentYear);
